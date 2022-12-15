@@ -1,11 +1,13 @@
 package com.afs.todolist.controller;
 
+import com.afs.todolist.controller.dto.TodoCreateRequest;
 import com.afs.todolist.controller.mapper.TodoMapper;
 import com.afs.todolist.entity.Todo;
+import com.afs.todolist.exception.InvalidIdException;
 import com.afs.todolist.service.TodoService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.bson.types.ObjectId;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -25,4 +27,30 @@ public class TodoController {
     List<Todo> getAll() {
         return todoService.findAll();
     }
+
+    //@POST @PUT @DELETE
+    @PostMapping
+    @ResponseStatus(code = HttpStatus.CREATED)
+    public Todo addTodo(@RequestBody TodoCreateRequest todoRequest) {
+        Todo todo =  todoMapper.toEntity(todoRequest);
+        return todoService.addTodo(todo);
+    }
+
+    @PutMapping("/{id}")
+    public Todo update(@PathVariable String id, @RequestBody TodoCreateRequest todoRequest) {
+        if(!ObjectId.isValid(id)){
+            throw new InvalidIdException(id);
+        }
+        Todo todo =  todoMapper.toEntity(todoRequest);
+        CompanyResponse companyResponse = companyMapper.toResponse( companyService.update(id, company));
+
+        return companyResponse;
+    }
+
+//    @DeleteMapping("/{id}")
+//    @ResponseStatus(HttpStatus.NO_CONTENT)
+//    void delete
+
+
+
 }

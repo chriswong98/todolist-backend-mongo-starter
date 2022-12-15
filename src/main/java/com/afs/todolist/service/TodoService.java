@@ -21,9 +21,28 @@ public class TodoService {
         return todoRepository.findAll();
     }
 
+    //PUT POST DELETE
+//    public Todo updateTodoStatus(String id){
+//        Todo upgradTodo
+//    }
+
     private void validateObjectId(String id){
         if(!ObjectId.isValid(id)){
             throw new InvalidIdException(id);
         }
     }
+
+    public Todo addTodo(Todo todo) {
+        return todoRepository.save(todo);
+    }
+
+    public Todo update(String todoId, Company toUpdateCompany) {
+        Todo existingCompany = companyMongoRepository.findById(companyId)
+                .orElseThrow(NoCompanyFoundException::new);
+        if (toUpdateCompany.getName() != null) {
+            existingCompany.setName(toUpdateCompany.getName());
+        }
+        return companyMongoRepository.save(existingCompany);
+    }
+
 }
