@@ -38,7 +38,7 @@ public class TodoService {
     }
 
     public Todo update(String todoId, Todo toUpdateTodo) {
-        Todo existingCompany = todoRepository.findById(todoId).orElseThrow(null);
+        Todo existingCompany = todoRepository.findById(todoId).get();
 
         if (toUpdateTodo.getDone() != null) {
             existingCompany.setDone(toUpdateTodo.getDone());
@@ -50,4 +50,7 @@ public class TodoService {
         return todoRepository.save(existingCompany);
     }
 
+    public void delete(String id) {
+        todoRepository.deleteById(id);
+    }
 }

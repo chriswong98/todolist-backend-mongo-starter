@@ -1,6 +1,7 @@
 package com.afs.todolist.controller;
 
 import com.afs.todolist.controller.dto.TodoCreateRequest;
+import com.afs.todolist.controller.dto.TodoUpdateRequest;
 import com.afs.todolist.controller.mapper.TodoMapper;
 import com.afs.todolist.entity.Todo;
 import com.afs.todolist.exception.InvalidIdException;
@@ -37,7 +38,7 @@ public class TodoController {
     }
 
     @PutMapping("/{id}")
-    public Todo update(@PathVariable String id, @RequestBody TodoCreateRequest todoRequest) {
+    public Todo update(@PathVariable String id, @RequestBody TodoUpdateRequest todoRequest) {
         if(!ObjectId.isValid(id)){
             throw new InvalidIdException(id);
         }
@@ -46,9 +47,14 @@ public class TodoController {
         return todoService.update(id, todo);
     }
 
-//    @DeleteMapping("/{id}")
-//    @ResponseStatus(HttpStatus.NO_CONTENT)
-//    void delete
+    @DeleteMapping("/{id}")
+    //@ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteTodo(@PathVariable String id) {
+//        if(!ObjectId.isValid(id)){
+//            throw new InvalidIdException(id);
+//        }
+        todoService.delete(id);
+    }
 
 
 
