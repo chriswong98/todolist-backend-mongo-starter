@@ -2,6 +2,7 @@ package com.afs.todolist.service;
 
 import com.afs.todolist.entity.Todo;
 import com.afs.todolist.exception.InvalidIdException;
+import com.afs.todolist.exception.TodoNotFoundException;
 import com.afs.todolist.repository.TodoRepository;
 import org.bson.types.ObjectId;
 import org.springframework.stereotype.Service;
@@ -36,13 +37,17 @@ public class TodoService {
         return todoRepository.save(todo);
     }
 
-    public Todo update(String todoId, Company toUpdateCompany) {
-        Todo existingCompany = companyMongoRepository.findById(companyId)
-                .orElseThrow(NoCompanyFoundException::new);
-        if (toUpdateCompany.getName() != null) {
-            existingCompany.setName(toUpdateCompany.getName());
+    public Todo update(String todoId, Todo toUpdateTodo) {
+        Todo existingCompany = todoRepository.findById(todoId).orElseThrow(null);
+
+        if (toUpdateTodo.getDone() != null) {
+            existingCompany.setDone(toUpdateTodo.getDone());
         }
-        return companyMongoRepository.save(existingCompany);
+        if (toUpdateTodo.getText() != null) {
+            existingCompany.setText(toUpdateTodo.getText());
+        }
+
+        return todoRepository.save(existingCompany);
     }
 
 }

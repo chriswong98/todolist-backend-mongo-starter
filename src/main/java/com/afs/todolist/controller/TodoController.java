@@ -42,9 +42,8 @@ public class TodoController {
             throw new InvalidIdException(id);
         }
         Todo todo =  todoMapper.toEntity(todoRequest);
-        CompanyResponse companyResponse = companyMapper.toResponse( companyService.update(id, company));
 
-        return companyResponse;
+        return todoService.update(id, todo);
     }
 
 //    @DeleteMapping("/{id}")
